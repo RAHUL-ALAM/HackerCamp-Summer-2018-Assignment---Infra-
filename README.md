@@ -2,6 +2,7 @@
 Contains the script for infrastructure assignment
 
 The script is written in python 2.7
+The script is verified on ubuntu 16.04
 
 
 
@@ -12,6 +13,8 @@ To use this script,
 	2. Then run the script there. In terminal run the command - python script.py
 	
 	3. Now you are all done. Your file are now organised according to their extensions. A folder named "FILE_ORGANISED" will be created in the directory and all the other folders are deleted. In the "FILE_ORGANISED" folder there will be separate folders named mp3, mp4, jpg, pdf etc., ofcourse if those kinds of files exist. In that specific folder you can fins all files with that extensions.
+	Even if there is any folder named "FILES_ORGANISED" previosly(already exist), its not an issue as the script will handle it.
+	Also top 10 biggest files will be shown in the terminal with their respective size in bytes
 	
 
 
