@@ -1,7 +1,22 @@
 import os, shutil
 
-# The root directory where we wants the files to be organised
-home = os.getcwd()
+# The path to home
+home = os.path.expanduser('~')
+# The path to desktop and Downloads
+desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
+downloads = os.path.join(os.path.join(os.path.expanduser('~')), 'Downloads') 
+
+
+
+
+############################################################################
+#### CODE TO ORGANISE THE FILES IN DESKTOP #################################
+#############################################################################
+
+
+
+
+
 
 ####################
 # This function is to check if a diretory exist or not.
@@ -39,8 +54,14 @@ def check_file(file_path, new_path):
 # This function is to clean a specified directory
 def clean_path(path):
 	for p in os.listdir(path):
-		if os.path.isdir(p) and not os.listdir(p):
+		if os.path.isdir(p) and p!="FILE_ORGANISED":
 			shutil.rmtree(p)
+
+
+def rename_dir():
+	for p in os.listdir(desktop):
+		if p=="FILE_ORGANISED":
+			os.rename(p, os.path.join(desktop, "FILE_ORGANISED_2"))
 
 
 ###################
@@ -50,21 +71,59 @@ def clean_path(path):
 # Now check the extension of the file and if there is no specific folder for these category file reate one
 # Then check if there is another file with same name as current one in case rename that.
 # finally move the file to its specific folder
-for dirpath, dirs, files in os.walk(home):	
-	for filename in files:
-		if filename=="script.py":
-			continue
 
-		fname = os.path.join(dirpath,filename)
-		file_name, file_extension = os.path.splitext(fname)
-		dir_to_check = os.path.join(os.path.join(home, "FILE_ORGANISED/"), os.path.join(file_extension[1:].lower(), "test.test"))
-		directory = os.path.dirname(dir_to_check)
-		check_dir(directory)
+def Organise_desktop():
+	rename_dir()
+	for dirpath, dirs, files in os.walk(desktop):	
+		for filename in files:
+			fname = os.path.join(dirpath,filename)
 
-		new_path = os.path.join(directory, os.path.basename(fname))
-		check_file(new_path, new_path)
-		shutil.move(fname, new_path)
+			if fname==os.path.join(downloads, "script.py"):
+				continue
+
+			file_name, file_extension = os.path.splitext(fname)
+			dir_to_check = os.path.join(os.path.join(desktop, "FILE_ORGANISED/"), os.path.join(file_extension[1:].lower(), "test.test"))
+			directory = os.path.dirname(dir_to_check)
+			check_dir(directory)
+
+			new_path = os.path.join(directory, os.path.basename(fname))
+			check_file(new_path, new_path)
+			shutil.move(fname, new_path)
 
 
-# Finally clean the main directory and get rid of unnecessary folders
-clean_path(home)
+	# Finally clean the main directory and get rid of unnecessary folders
+	clean_path(desktop)
+
+Organise_desktop()
+
+
+
+
+############################################################################
+#### CODE TO FIND TOP 10 BIGGEST FILE IN THE COMPUTER ######################
+#############################################################################
+
+
+
+def top_files():
+	sizearray = []
+
+	for dirpath, dirs, files in os.walk(home):	
+		for filename in files:
+			fname = os.path.join(dirpath,filename)
+			sizearray.append([os.path.getsize(fname), fname])
+
+	sizearray.sort(reverse=True)
+
+	for i in sizearray[:10]:
+		print "File path : " + str(i[1]) + "    -     size: " +  str(i[0]) + " bytes"
+
+top_files()
+
+
+		
+
+
+
+
+
